@@ -16,6 +16,8 @@ class Itinerary:
                 
     def Default(self):
         print(self)
+        self = self.drop(0,axis=0)
+        print(self)
         #Prints inicial Table
         visited = [0]
         #Saves all places where we jhave already been
@@ -25,7 +27,7 @@ class Itinerary:
 
         
 
-        while count <= betriebe:
+        while count < betriebe:
             print(str(count)+' rounds')
             current = visited[-1]
                         
@@ -37,8 +39,8 @@ class Itinerary:
             minrow = currentindex.idxmin()
             print(minrow)
             #Searches minimum Row
-            print(minrow.loc[0])
-            smallestindex = minrow.loc[0]
+            print(minrow.loc[current])
+            smallestindex = minrow.loc[current]
             print(smallestindex)
             print(type(smallestindex))
             #Takes just the index of minrow 1 23 -> 1 
@@ -47,17 +49,18 @@ class Itinerary:
 
             if smallestindex in visited:
                 
-                currentindex = currentindex.drop(smallestindex,axis=0)
+                self = self.drop(smallestindex,axis=0)
                 minrow = currentindex.idxmin()
                 #Searches minimum Row
-                smallestindex = minrow.loc[0]
+                smallestindex = minrow.loc[current]
                 visited.append(smallestindex)
 
 
 
             else:
+                self = self.drop(smallestindex,axis=0)
                 minrow = currentindex.idxmin()
-                smallestindex = minrow.loc[0]
+                smallestindex = minrow.loc[current]
                 visited.append(smallestindex)
 
 

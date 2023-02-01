@@ -35,7 +35,7 @@ df = pd. DataFrame(Mamma, columns=['distance','time', 'source_index', 'target_in
 df.pop('time')
 #print(df) 
 pivoted = df.pivot(index='target_index', columns='source_index', values='distance')
-pivoted.replace(0, np.nan, inplace=True)
+#pivoted.replace(0, np.nan, inplace=True)
 
 #print(pivoted)
 #print(df.pivot(columns="source_index"))
