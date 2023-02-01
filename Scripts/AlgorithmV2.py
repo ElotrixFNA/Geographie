@@ -12,18 +12,7 @@ import pandas as pd
 #The point represented by the ID 0 will be treated as the starting point. In a first step the lower function will find the point with the smallest distance to zero and then go searching for the next closest point
 class Itinerary:
     def __init__(self,df):
-        #self.workRange=list(range(workstart, workEnd))
-        #self.visited = []
-        #self. Appointments = fixed
-       # self.fixedindex = []
-        #self.exclusionlist = []
         self.df = df
-        #def Decision(fixed):
-         #   if fixed != NULL:
-          #      FixedAppointments(self)
-           # else:
-            #    Default(self)    
-            #test = pivoted[[0]]
                 
     def Default(self):
         print(self)
@@ -41,32 +30,43 @@ class Itinerary:
             current = visited[-1]
                         
             print(str(current)+' current Column')
-            #print(str(type(current))+'current')
-            #
-            # print(self[[current]])
             currentindex = self[[current]]
             #currentindex displays just the one Column, of the Place we are right now to find the smallest
+
             print(str(currentindex))
-
-            #Searches minimum Row
             minrow = currentindex.idxmin()
+            print(minrow)
+            #Searches minimum Row
+            print(minrow.loc[0])
             smallestindex = minrow.loc[0]
-            print(type(minrow))
+            print(smallestindex)
+            print(type(smallestindex))
+            #Takes just the index of minrow 1 23 -> 1 
             print(str(smallestindex)+' current row')
-
-            while smallestindex in visited:
-                #currentindex.drop(currentindex[smallestindex])
-                currentindex = currentindex.drop(index = smallestindex)
-                minrow = currentindex.idxmin()
-
-                print("pop")
-                break
-
-            print('already done')
             print(visited)
-            visited.append(smallestindex)
-            count=count+1
-            return(visited)
+
+            if smallestindex in visited:
+                
+                currentindex = currentindex.drop(smallestindex,axis=0)
+                minrow = currentindex.idxmin()
+                #Searches minimum Row
+                smallestindex = minrow.loc[0]
+                visited.append(smallestindex)
+
+
+
+            else:
+                minrow = currentindex.idxmin()
+                smallestindex = minrow.loc[0]
+                visited.append(smallestindex)
+
+
+                #currentindex.drop(currentindex[smallestindex])
+                print("pop")
+            count = count + 1
+            print(currentindex)
+            print(visited)
+            print('already done')
             
                             
 
