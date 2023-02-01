@@ -27,23 +27,28 @@ class Itinerary:
                 
     def Default(self):
         print(self)
+        #Prints inicial Table
         visited = [0]
-        Betriebe = len(self)
+        #Saves all places where we jhave already been
+        betriebe = len(self)
+        #Gesamte Anzahl an zu besuchenen betrieben
         count = 0
 
         
 
-        while count <= Betriebe:
+        while count <= betriebe:
             print(str(count)+' rounds')
             current = visited[-1]
-            
+                        
             print(str(current)+' current Column')
             #print(str(type(current))+'current')
             #
             # print(self[[current]])
             currentindex = self[[current]]
+            #currentindex displays just the one Column, of the Place we are right now to find the smallest
             print(str(currentindex))
 
+            #Searches minimum Row
             minrow = currentindex.idxmin()
             smallestindex = minrow.loc[0]
             print(type(minrow))
@@ -55,7 +60,7 @@ class Itinerary:
                 minrow = currentindex.idxmin()
 
                 print("pop")
-                
+                break
 
             print('already done')
             print(visited)

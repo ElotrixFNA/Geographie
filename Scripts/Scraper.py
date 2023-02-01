@@ -6,6 +6,7 @@ Created on Fri Jan 27 09:53:00 2023
 """
 
 import requests, pandas as pd
+import numpy as np
 import AlgorithmV2
 from requests.structures import CaseInsensitiveDict
 
@@ -34,6 +35,8 @@ df = pd. DataFrame(Mamma, columns=['distance','time', 'source_index', 'target_in
 df.pop('time')
 #print(df) 
 pivoted = df.pivot(index='target_index', columns='source_index', values='distance')
+pivoted.replace(0, np.nan, inplace=True)
+
 #print(pivoted)
 #print(df.pivot(columns="source_index"))
 #print(pivoted['source_index'])
