@@ -70,6 +70,7 @@ class Itinerary:
             print(currentindex)
             print(visited)
             print('already done')
+        return(visited)
             
                             
 
