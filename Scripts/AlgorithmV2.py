@@ -38,17 +38,20 @@ class Itinerary:
         while count < betriebe:
             print(str(count)+' rounds')
             current = visited[-1]
-                        
+            #To get the last integer in visited
+
             print(str(current)+' current Column')
             currentindex = self.df[[current]]
             #currentindex displays just the one Column, of the Place we are right now to find the smallest
 
             print(str(currentindex))
             minrow = currentindex.idxmin()
+            #gets the Index of the Row with the lowest value instead of the value itself
             print(minrow)
             #Searches minimum Row
             print(minrow.loc[current])
             smallestindex = minrow.loc[current]
+            #gets just the row-index, so we can save the variable in visited
             print(smallestindex)
             print(type(smallestindex))
             #Takes just the index of minrow 1 23 -> 1 
@@ -56,20 +59,27 @@ class Itinerary:
             print(visited)
 
             if smallestindex in visited:
-                
+                #if the nearest place is already visited we 
                 self.df = self.df.drop(smallestindex,axis=0)
+                #we drop the whole Row from the table, so its easier to find the smallest distant place
+                #cause now the visited places arent in the original table anymore
                 minrow = currentindex.idxmin()
                 #Searches minimum Row
                 smallestindex = minrow.loc[current]
+                #extracts just the rowindex
                 visited.append(smallestindex)
+                #we add the nearest place to the visited list
 
 
 
             else:
                 self.df = self.df.drop(smallestindex,axis=0)
+                #we drop the Row since its the nearest place, and it isnt visited yet
                 minrow = currentindex.idxmin()
                 smallestindex = minrow.loc[current]
+                #get the row-index of the minimum row again
                 visited.append(smallestindex)
+                #appends the rownumber to the visited list
 
 
                 #currentindex.drop(currentindex[smallestindex])
