@@ -94,15 +94,19 @@ class Itinerary:
 
 
     def Fixed(self):
-        
+        #this class returns a list of indexes, that are to visit at specific times
+        #it takes in all working hours and assigns fixed appointments to their corresponding
         print(self.df)
         itinerary = []
         prior = 0
         print(self.fixed)
-        #include line about false positive issue
+        #! Alphabet include line about false positive issue
+        #fills up itinerary with the amount of working hours 
         for i in range(self.wStart, self.wEnd):
             itinerary.append(i)
+        #always have to start point 0
         itinerary[0]=0
+        #dictionary provides position of fixed appointments
         for element in self.fixed:
             print(self.fixed)
             print(element)
@@ -122,7 +126,7 @@ class Itinerary:
             print('range Dist')
             print(range(halfDist))
             print('half Dist range')
-            #prior =
+            #for loop parses each distance entry for fixed appointment through if statements to find closest one
             for item in list(self.df[str(element)]):
                 print(item)
                 print('for item loop')
