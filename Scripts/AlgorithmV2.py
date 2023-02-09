@@ -90,7 +90,16 @@ class Itinerary:
             print('already done')
         return(visited)
             
-                            
+
+  
+                               
+                            ################
+                            ################
+                            #    FIXED     #
+                            ################
+                            ################
+
+
 
 
     def Fixed(self):
