@@ -32,13 +32,17 @@ for item in clean:
 #print(Mamma)
                
 df = pd. DataFrame(Mamma, columns=['distance','time', 'source_index', 'target_index'], index=range(len(GPS)*len(GPS)))
-df.pop('time')
+df.pop('distance')
 #print(df) 
-pivoted = df.pivot(index='target_index', columns='source_index', values='distance')
+pivoted = df.pivot(index='target_index', columns='source_index', values='time')
+wStart = 8
+wEnd = 12
+fixed = {1:9, 3:10}
 #pivoted.replace(0, np.nan, inplace=True)
 
 #print(pivoted)
 #print(df.pivot(columns="source_index"))
 #print(pivoted['source_index'])
-calc = AlgorithmV2.Itinerary.Default(pivoted)
+calc = AlgorithmV2.Itinerary(pivoted, wStart, wEnd, fixed)
+calc.Fixed()
 

@@ -114,8 +114,8 @@ class Itinerary:
             itinerary.insert(itinerary.index(self.fixed.get(element)),element)
             #determine preceeding appointments of current fixed appointment
             #determine distance between prior fixed appointment and current fixed appointment
-            Dist = round(self.df.at[prior, str(element)])
-            print(self.df.at[prior, str(element)])
+            Dist = round(self.df.at[prior, element])
+            print(self.df.at[prior, element])
             halfDist = round(Dist/2)
             quartDist=round(halfDist/2)
             print(Dist)
@@ -127,7 +127,7 @@ class Itinerary:
             print(range(halfDist))
             print('half Dist range')
             #for loop parses each distance entry for fixed appointment through if statements to find closest one
-            for item in list(self.df[str(element)]):
+            for item in list(self.df[element]):
                 print(item)
                 print('for item loop')
                 if item in [range(quartDist+1)]:
@@ -136,7 +136,7 @@ class Itinerary:
                     if item.index not in itinerary:
                         leftidx = element -1 
                         itinerary.insert(leftidx, item.index)
-                        self.df.drop(str(item.index))
+                        self.df.drop(item.index)
                         prior = item.index
                         print(prior)
                         print('prior')
