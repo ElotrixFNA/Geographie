@@ -2,11 +2,12 @@
 """
 Created on Wed Feb  1 12:04:47 2023
 
-@author: jules
+@author: jules, Felix Erb
 """
 
 
 import pandas as pd
+import string
 #inputs: distance matrix(MUST INCLUDE), potentially a dictionary of fixed appointments, start and end of work time
 
 
@@ -103,87 +104,120 @@ class Itinerary:
 
 
     def Fixed(self):
-        #this class returns a list of indexes, that are to visit at specific times
-        #it takes in all working hours and assigns fixed appointments to their corresponding
+        self.df = self.df.drop(0,axis=0)
+        #Drop The Row 0
+        original_table = self.df
+        #save the original table cause we have to come back to it later
         print(self.df)
         itinerary = []
-        prior = 0
-        print(self.fixed)
-        #! Alphabet include line about false positive issue
-        #fills up itinerary with the amount of working hours 
-        for i in range(self.wStart, self.wEnd):
-            itinerary.append(i)
-        #always have to start point 0
-        itinerary[0]=0
-        #dictionary provides position of fixed appointments
-        for element in self.fixed:
-            print(self.fixed)
-            print(element)
-            #insert index of fixed appoint at correct point in itinerary. Using value to identify itinerary index for the key
-            itinerary.insert(itinerary.index(self.fixed.get(element)),element)
-            #determine preceeding appointments of current fixed appointment
-            #determine distance between prior fixed appointment and current fixed appointment
-            Dist = round(self.df.at[prior, element])
-            print(self.df.at[prior, element])
-            halfDist = round(Dist/2)
-            quartDist=round(halfDist/2)
-            print(Dist)
-            print('Dist')
-            #checking whether previous appointment within acceptable range
-            #for loop listing all items in column of the index of the current fixed appointment
-            print(range(Dist))
-            print('range Dist')
-            print(range(halfDist))
-            print('half Dist range')
-            #for loop parses each distance entry for fixed appointment through if statements to find closest one
-            for item in list(self.df[element]):
-                print(item)
-                print('for item loop')
-                if item in [range(quartDist+1)]:
-                    print([range(quartDist)])
-                    print('if1')
-                    if item.index not in itinerary:
-                        leftidx = element -1 
-                        itinerary.insert(leftidx, item.index)
-                        self.df.drop(item.index)
-                        prior = item.index
-                        print(prior)
-                        print('prior')
-                    else:
-                        print('Error1')
-                        pass
-                    
-                else:
-                    print('else')
-                    if item in [range(halfDist+1)]:
-                        print('if2')
-                        if item.index not in itinerary:
-                            leftidx = element -1 
-                            itinerary.insert(leftidx, item.index)
-                            self.df.drop(str(item.index))
-                            prior = item.index
-                            print(prior)
-                            print('prior')
-                        else:
-                            print('Error2')
-                            pass
-                    else:
-                        print('else2')
-                        if item in [range(Dist+1)]:
-                            print('if3')
-                            if item.index not in itinerary:
-                                leftidx = element-1 
-                                itinerary.insert(leftidx, item.index)
-                                self.df.drop(str(item.index))
-                                prior = item.index
-                                print(prior)
-                                print('prior')
-                            else:
-                                print('Error3')
-                                pass
-                        else:
-                            print('there is no item in range')
-                        #What to do, when there isn't an item that is within that distance?
+        #empty itinerary
+        visited = [0]
+        #we start at 0 so we start with that value
+        duration = 0.5
+        #duration of a meeting
+        fixedAPT = self.fixed
+        #the Fixed appointments
+        sortedFixed =  {k: v for k, v in sorted(fixedAPT.items(), key=lambda item: item[1])}
+        #this command sorts the fixed appointments by its time (value)
+        #sorts the fixed appointments by the Time they occur
+        print(sortedFixed)
+
+        betriebe = self.df.index
+        #gets every location 1-3
+        print(betriebe)
+        fixedLocations = fixedAPT.keys()
+        #this gets just the number of the location without the value
+        freeAPT = [betriebe.drop(fixedAPT.keys())]
+        #subtracts all location with those who have an fixed appointment.
+        #with that we can check what location we could visit in the spare time
+        print(len(betriebe))
+        #length of betriebe
+        print(freeAPT)
+        currentTime = self.wStart
+
+        count = 0
+
+
+        for i in range(len(self.df) + 1):
+            itinerary.append(string.ascii_uppercase[i])
+            #fills up itinerary with the amount of Appointments 
+            #Loads up itinerary with Letters A-D + 1 so 0 is inside
+
+        while count < len(betriebe):
+            #as long as the count is lower then 4
+            print(len(betriebe))
+            print(str(count) + ' current count')
+            count = count + 1
+            current = visited[-1]
+            #sets the current location
+            print('current Position ' + str(current))
+            timeNextAppointment = min(sortedFixed.values())
+            #gets the time of the next fixed appointment by getting the minimum value of the sorted fixed appointments
+            nextaptLocation = min(sortedFixed.items(), key=lambda x: x[1])[0]
+            #gets the location of the next fixed appointment 
+            print(str(nextaptLocation) + ' is the next location and at ' + str(timeNextAppointment) + ' is next appointment')
+            Difference = (timeNextAppointment - (currentTime + duration)) * 60
+            #Gets the difference between the the time of the next appointment, the current time plus the duration in minutes
+            print(str(Difference) + ' Minutes time frame')
+            print(current)
+            print(nextaptLocation)
+            DurationToFixed =(self.df.loc[nextaptLocation, current])/60
+            #is the duration of the drive to the next fixed appointment in minutes
+            print(str(DurationToFixed) + ' minutes travel time to the fixed appointment')
+            self.df = self.df.drop(fixedLocations,axis=0)
+            #drops the fixed Locations from the table, so only those remain in the Dataframe that arent fixed
+            
+            while Difference - DurationToFixed > 0:
+                #first error of the script i think, it gets permanently lower as the while goes on...
+                print(Difference)
+                print('if')
+
+                print(fixedLocations)
+                
+                print(self.df)
+                minrow = self.df.idxmin()
+                #gets the minimum row from the starting point (0)
+                nearestfreeloc = minrow.loc[current]
+                #Gets the nearest free location, same prinzip as in the script without the fixed location
+                print(nearestfreeloc)
+                starttosmallest = (self.df.loc[nearestfreeloc, current])/60
+                #is the traveltime from the startinpoint to the nearest Location without fixed appointment in minutes
+                smallesttofixed =(original_table.loc[nextaptLocation, nearestfreeloc])/60
+                #is the traveltime from the nearest location whiout fixed Appointment to the next fixed Appointment in minutes
+                print(starttosmallest)
+                print(smallesttofixed)
+                DurationToFixed = duration + smallesttofixed + starttosmallest
+                #Is the total time it takes to get from the starting location to the fixed appointment
+                Difference = Difference - DurationToFixed
+                #new Difference
+                print(DurationToFixed)
+                print(Difference)
+
+                print(fixedLocations)
+
+            del fixedAPT[nextaptLocation]
+            #deletes the Fixed appointment what we visited from the List, means the one remaining would be location n. 1 at 10
+            print(fixedAPT.keys())
+    
+
+
+
+
+
+
+
+                
+            
+            if Difference - DurationToFixed == 0:
+                print('perfect route to Fixed')
+            
+            else:
+                print('error')
+
+            
+
+
+
                             
         print(itinerary)
         return(itinerary)

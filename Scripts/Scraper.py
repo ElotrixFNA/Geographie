@@ -37,7 +37,7 @@ df.pop('distance')
 pivoted = df.pivot(index='target_index', columns='source_index', values='time')
 wStart = 8
 wEnd = 12
-fixed = {1:9, 3:10}
+fixed = {1:10, 2:9}
 #pivoted.replace(0, np.nan, inplace=True)
 
 #print(pivoted)
